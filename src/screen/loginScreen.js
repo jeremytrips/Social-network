@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { View, TextInput, Button, Text, Platform, StyleSheet } from "react-native";
 
-// import {login as fb_login} from "../utils/authAPI";
+import {login as fb_login} from "../api/authAPI";
 
 
 
@@ -20,13 +20,13 @@ export default ({navigation}) => {
 
     const login = () => {
         setError("");
-        // fb_login(email, password)
-        // .then(()=>{
-        //     navigation.navigate("mainStack");
-        // })
-        // .catch((err)=>{
-        //     setError(err)
-        // })
+        fb_login(email, password)
+        .then(()=>{
+            // todo navigation
+        })
+        .catch((err)=>{
+            setError(err)
+        })
     }
 
     return(

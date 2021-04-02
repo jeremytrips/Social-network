@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput } from "react-native";
 
+import { registerNewUserWithEmail } from "../api/authAPI";
+
 
 export default () => {
     const [nickName, setNickName] = useState("")
@@ -14,7 +16,14 @@ export default () => {
             setError("Mot de passe sont différents");
             return;
         }
-        // todo add the user registration from api
+
+        registerNewUserWithEmail()
+        .then(()=>{
+            // todo add navigation
+        })
+        .catch((err)=>{
+            setError(err);
+        })
     }
 
     return (

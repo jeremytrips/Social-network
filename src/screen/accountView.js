@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { View, Image, StyleSheet, TextInput, Button } from "react-native"
+import { logout } from "../api/authAPI";
 import PictureModal from "../modals/pictureModal";
 
 export default () => {
@@ -32,6 +33,10 @@ export default () => {
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
             />
+            <Button
+                title="Se déconnecter"
+                onPress={logout}
+            /> 
         </View>
     )
 };
