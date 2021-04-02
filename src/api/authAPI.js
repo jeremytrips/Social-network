@@ -2,8 +2,8 @@ import auth from "@react-native-firebase/auth";
 
 import { AuthErrorHandler } from "../handler/authHandler";
 
-__USE_EMULATOR__ = true;
-__AUTH_EMULATOR__ = "http://localhost:5004"
+// __USE_EMULATOR__ = true;
+// __AUTH_EMULATOR__ = "http://localhost:5004"
 
 export const updateAndGetUser = () =>{
     return new Promise((resolve, reject) => {
@@ -39,8 +39,8 @@ export const registerNewUserWithEmail = (userEmail, password, userData) => {
     return new Promise( async (resolve, reject) => {  
         try {
             var photoURL = undefined;
-            if(__USE_EMULATOR__)
-                auth().useEmulator(__AUTH_EMULATOR__);
+            // if(__USE_EMULATOR__)
+            //     auth().useEmulator(__AUTH_EMULATOR__);
             var user = await auth().createUserWithEmailAndPassword(userEmail, password);
             await auth().currentUser.sendEmailVerification();
 
@@ -73,8 +73,8 @@ export const registerNewUserWithEmail = (userEmail, password, userData) => {
 
 export const login = (email, password) => {
     return new Promise((resolve, reject)=>{
-        if(__USE_EMULATOR__)
-            auth().useEmulator(__AUTH_EMULATOR__);
+        // if(__USE_EMULATOR__)
+        //     auth().useEmulator(__AUTH_EMULATOR__);
         auth().signInWithEmailAndPassword(email, password)
         .then((user) =>{
             resolve();
@@ -92,7 +92,6 @@ export const login = (email, password) => {
 
 export const logout = () =>{
     return new Promise((resolve, reject) => {
-        auth().signOut()
-        
+        auth().signOut();
     })
 }

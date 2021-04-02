@@ -8,10 +8,16 @@ export default () => {
     const userImage = require("../../assets/default-avatar.png")
 
     const [post, setPost] = useState("");
-    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [postImageURI, _setPostImageURI] = useState(null);
+
+    const setPostImageURI = (uri) => {
+        // todo display image on screen
+        _setPostImageURI(uri);
+    }
 
     const openPictureModal = () => {
-        setModalIsOpen(true)
+        setModalIsOpen(true);
     }
 
     const postMessage = () => {
@@ -32,6 +38,7 @@ export default () => {
             <PictureModal
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
+                setImageURI={setPostImageURI}
             />
             <Button
                 title="Se déconnecter"

@@ -16,8 +16,11 @@ export default () => {
             setError("Mot de passe sont différents");
             return;
         }
+        const userdata = {
+            displayName: nickName
+        }
 
-        registerNewUserWithEmail()
+        registerNewUserWithEmail(email, password, userdata)
         .then(()=>{
             // todo add navigation
         })

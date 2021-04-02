@@ -3,7 +3,7 @@ import { Modal, View, Pressable, StyleSheet, Text } from "react-native";
 
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
-export default ({modalIsOpen, setModalIsOpen}) => {
+export default ({modalIsOpen, setModalIsOpen, setImageURI}) => {
 
     const getPicture = () => {
         const options = {
@@ -16,7 +16,7 @@ export default ({modalIsOpen, setModalIsOpen}) => {
             if (resp.didCancel)
                 return
             setImage({uri: resp.uri});
-            setPhotoURI(resp.uri);
+            setImageURI(resp.uri);
             setModalIsOpen(false);
         })
     }
@@ -33,7 +33,7 @@ export default ({modalIsOpen, setModalIsOpen}) => {
             if (resp.didCancel)
                 return
             setImage({uri: resp.uri});
-            setPhotoURI(resp.uri);
+            setImageURI(resp.uri);
             setModalIsOpen(false);
         })
     }
