@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import RegisterScreen from "../screen/registerScreen";
 import LoginScreen from "../screen/loginScreen";
 import accountView from "../screen/accountView";
+import otherAccoutView from "../screen/otherAccountView"
 
 export default () => {
 
@@ -15,8 +16,7 @@ export default () => {
         // <NavigationContainer>
             <nav.Navigator>
                 <nav.Screen name="account" component={accountView}/>
-                <nav.Screen name="login" component={LoginScreen}/>
-                <nav.Screen name="register" component={RegisterScreen}/>
+                <nav.Screen name="otherAccount" component={otherAccoutView}/>
             </nav.Navigator>
         // </NavigationContainer>
     )

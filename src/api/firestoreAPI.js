@@ -31,7 +31,7 @@ export const createNewPost = (text, imageURI) => {
             text: text,
             date: firestore.Timestamp.now(),
             imageUrl: null,
-            user: getUserRef()
+            user: getUser().uid
         }
         try {
             if(imageURI != null){
@@ -61,11 +61,15 @@ export const fetchUser = (uid) => {
 }
 
 export const fetchUserPost = (uid) => {
-    const postsCol = db.collection('posts');
-    const userRef = getUserRef(uid);
-    postsCol.where('user', '==', userRef).get()
-    .then((resp)=>{
-        console.log(resp.docs);
+    return new Promise((resolve, reject)=>{
+        const postsCol = db.collection('posts');
+        postsCol.where('user', '==', uid).get()
+        .then((resp)=>{
+            resolve(resp.docs);
+        })
+        .catch((error)=>{
+            console.warn(error);
+            reject(error);
+        })
     })
-
 }

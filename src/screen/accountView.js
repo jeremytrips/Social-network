@@ -28,12 +28,10 @@ export default () => {
     const postMessage = () => {
         createNewPost(userPost, postImageURI)
         .then(()=>{
-            console.log("then");
             setUserPost("");
             setImage(_cameraImage);
         })
         .catch((error)=>{
-            console.log(error)
             Alert.alert(
                 "Attention",
                 "Votre poste n'a pas pu être créer",
