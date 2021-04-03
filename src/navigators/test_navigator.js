@@ -12,12 +12,12 @@ export default () => {
     const nav = createBottomTabNavigator();
 
     return (
-        <NavigationContainer>
+        // <NavigationContainer>
             <nav.Navigator>
                 <nav.Screen name="account" component={accountView}/>
                 <nav.Screen name="login" component={LoginScreen}/>
                 <nav.Screen name="register" component={RegisterScreen}/>
             </nav.Navigator>
-        </NavigationContainer>
+        // </NavigationContainer>
     )
 }

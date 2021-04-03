@@ -1,12 +1,14 @@
 
 import React, { useState } from "react";
-import { View, Image, StyleSheet, TextInput, Button } from "react-native"
-import { logout } from "../api/authAPI";
+import { View, Image, StyleSheet, TextInput, Button, Text } from "react-native"
+
+import { logout, getUser } from "../api/authAPI";
 import PictureModal from "../modals/pictureModal";
 
 export default () => {
-    const userImage = require("../../assets/default-avatar.png")
-
+    const userImage = require("../../assets/default-avatar.png");
+    
+    const user = getUser();
     const [post, setPost] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postImageURI, _setPostImageURI] = useState(null);
@@ -27,6 +29,7 @@ export default () => {
     return(
         <View>
             <Image source={userImage} style={styles.avatar}/>
+           {user!=null? <Text>{user.displayName}</Text>:null}
             <View>
                 <TextInput
                     onChange={setPost}

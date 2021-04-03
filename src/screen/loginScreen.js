@@ -11,7 +11,7 @@ export default ({navigation}) => {
     const [error, setError] = useState("");
     
     const navigateToRegistration = ()=>{
-        navigation.navigate('Registration');
+        navigation.navigate('register');
     }
 
     useEffect(()=>{
