@@ -15,7 +15,6 @@ export default ({modalIsOpen, setModalIsOpen, setImageURI}) => {
             // todo alert user that he has cancel.
             if (resp.didCancel)
                 return
-            setImage({uri: resp.uri});
             setImageURI(resp.uri);
             setModalIsOpen(false);
         })
@@ -32,7 +31,6 @@ export default ({modalIsOpen, setModalIsOpen, setImageURI}) => {
             // todo alert user that he has cancel.
             if (resp.didCancel)
                 return
-            setImage({uri: resp.uri});
             setImageURI(resp.uri);
             setModalIsOpen(false);
         })

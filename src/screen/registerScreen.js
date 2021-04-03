@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, TextInput } from "react-native";
 
 import { registerNewUserWithEmail } from "../api/authAPI";
+import { createUserDocument } from "../api/firestoreAPI";
 
 
 export default () => {
@@ -11,7 +12,7 @@ export default () => {
     const [password2, setPassword2] = useState("Youssoupha1995");
     const [error, setError] = useState("")
 
-    const register = () => {
+    const register = async () => {
         if( password != password2){
             setError("Mot de passe sont différents");
             return;
@@ -19,14 +20,12 @@ export default () => {
         const userdata = {
             displayName: nickName
         }
-
-        registerNewUserWithEmail(email, password, userdata)
-        .then(()=>{
-            // todo add navigation
-        })
-        .catch((err)=>{
-            setError(err);
-        })
+        try{
+            await registerNewUserWithEmail(email, password, userdata);
+            await createUserDocument(userdata);
+        } catch (error) {
+            setError(error);
+        }
     }
 
     return (

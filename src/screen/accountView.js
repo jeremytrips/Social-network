@@ -1,20 +1,23 @@
 
 import React, { useState } from "react";
-import { View, Image, StyleSheet, TextInput, Button, Text } from "react-native"
+import { View, Image, StyleSheet, TextInput, Button, Text, Alert, Pressable } from "react-native"
 
 import { logout, getUser } from "../api/authAPI";
+import { createNewPost } from "../api/firestoreAPI";
 import PictureModal from "../modals/pictureModal";
 
 export default () => {
     const userImage = require("../../assets/default-avatar.png");
-    
+    const _cameraImage = require("../../assets/camera.png")
+
     const user = getUser();
-    const [post, setPost] = useState("");
+    const [image, setImage] = useState(_cameraImage);
+    const [userPost, setUserPost] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postImageURI, _setPostImageURI] = useState(null);
 
     const setPostImageURI = (uri) => {
-        // todo display image on screen
+        setImage({uri: uri})
         _setPostImageURI(uri);
     }
 
@@ -23,7 +26,22 @@ export default () => {
     }
 
     const postMessage = () => {
-        // todo in the api
+        createNewPost(userPost, postImageURI)
+        .then(()=>{
+            console.log("then");
+            setUserPost("");
+            setImage(_cameraImage);
+        })
+        .catch((error)=>{
+            console.log(error)
+            Alert.alert(
+                "Attention",
+                "Votre poste n'a pas pu être créer",
+                [
+                    { text: "OK" }
+                ]
+            )
+        });
     }
 
     return(
@@ -31,11 +49,17 @@ export default () => {
             <Image source={userImage} style={styles.avatar}/>
            {user!=null? <Text>{user.displayName}</Text>:null}
             <View>
-                <TextInput
-                    onChange={setPost}
-                    placeholder="Qqch à dire?"
-                />
-                <Button title="Poster" onPress={postMessage}/>
+                <View style={{flexDirection: "row"}}>
+                    <TextInput
+                        onChangeText={setUserPost}
+                        placeholder="Qqch à dire?"
+
+                    />
+                    <Pressable onPress={openPictureModal}>
+                        <Image source={image} style={{width: 50, height: 50}}/>
+                    </Pressable>
+                </View>
+                    <Button title="Poster" onPress={postMessage}/>
                 <Button title="Ajouter une image" onPress={openPictureModal}/>
             </View>
             <PictureModal
