@@ -1,6 +1,8 @@
 import auth from "@react-native-firebase/auth";
 
 import { AuthErrorHandler } from "../handler/authHandler";
+import { createUserDocument } from "./firestoreAPI";
+import { createUserProfile } from "./functionsAPI";
 
 __USE_EMULATOR__ = true;
 __AUTH_EMULATOR__ = "http://localhost:9099"
@@ -40,8 +42,9 @@ export const registerNewUserWithEmail = (userEmail, password, userData) => {
         try {
             if(__USE_EMULATOR__)
                 auth().useEmulator(__AUTH_EMULATOR__);
-            var user = await auth().createUserWithEmailAndPassword(userEmail, password);
-            user = await auth().currentUser.updateProfile(userData);
+            await auth().createUserWithEmailAndPassword(userEmail, password);
+            await auth().currentUser.updateProfile(userData);
+            createUserProfile(userData);
             resolve();
         } catch (error) {
             const errorTranslation = AuthErrorHandler(error);

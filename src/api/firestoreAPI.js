@@ -13,8 +13,8 @@ db.settings({
 
 
 
-export const getUserRef = () => {
-    return db.collection('users').doc(getUser().uid)
+export const getUserRef = (uid) => {
+    return db.collection('users').doc(uid);
 }
 
 
@@ -23,23 +23,10 @@ export const fetchProfileData = async () => {
     return snapshot.data();
 }
 
-export const createUserDocument = ({uid, userData}) => {
-    return new Promise((resolve, reject)=>{
-        db.collection('users').doc(uid).set({
-            nickname: userData.nickname
-        })
-        .then(resolve)
-        .catch((error)=>{
-            // todo create error managment
-            reject(error);
-        })    
-    })
-}
 
 export const createNewPost = (text, imageURI) => {
     return new Promise( async (resolve, reject) => {
         // todo add image save on fb storage
-        console.log(text);
         var data = {
             text: text,
             date: firestore.Timestamp.now(),
@@ -58,4 +45,27 @@ export const createNewPost = (text, imageURI) => {
         }
         
     })
+}
+
+
+export const fetchUser = (uid) => {
+    return new Promise( async (resolve, reject) => {
+        try {
+            user = await db.collection('users').doc(uid).get();
+            resolve(user.data());   
+        } catch (error) {
+            reject(error);
+        }
+    })
+
+}
+
+export const fetchUserPost = (uid) => {
+    const postsCol = db.collection('posts');
+    const userRef = getUserRef(uid);
+    postsCol.where('user', '==', userRef).get()
+    .then((resp)=>{
+        console.log(resp.docs);
+    })
+
 }

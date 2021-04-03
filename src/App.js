@@ -13,8 +13,7 @@ import auth from "@react-native-firebase/auth";
 import { NavigationContainer } from '@react-navigation/native';
 import { getUser } from "./api/authAPI";
 import { AuthContextProvider } from './context/authContext'
-import { Text } from 'react-native';
-import test_navigator from './navigators/test_navigator';
+import AuthNavigator from './navigators/authNavigator';
 
 
 const App = () => {
@@ -27,7 +26,6 @@ const App = () => {
         if (initializing)
             setInitializing(false);
     }
-
 
     useEffect(() => {
         const authSubscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -42,12 +40,12 @@ const App = () => {
         let cUser = getUser();
         if(cUser === null){
             return (
-                test_navigator()
+                AuthNavigator()
             );
         } else {
             return (
                 <AuthContextProvider value={user}>
-                    {test_navigator()}
+                    {TestNavigator()}
                 </AuthContextProvider>
             );
         }

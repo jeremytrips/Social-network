@@ -5,8 +5,8 @@ import { registerNewUserWithEmail } from "../api/authAPI";
 import { createUserDocument } from "../api/firestoreAPI";
 
 
-export default () => {
-    const [nickName, setNickName] = useState("")
+export default ({navigation}) => {
+    const [nickName, setNickName] = useState("helloworld")
     const [email, setEmail] = useState("jeremy.trips@gmail.com");
     const [password, setPassword] = useState("Youssoupha1995");
     const [password2, setPassword2] = useState("Youssoupha1995");
@@ -22,8 +22,8 @@ export default () => {
         }
         try{
             await registerNewUserWithEmail(email, password, userdata);
-            await createUserDocument(userdata);
         } catch (error) {
+            console.warn(error);
             setError(error);
         }
     }
@@ -36,7 +36,8 @@ export default () => {
             <Text>
                 {error!=""?<Text>{error}</Text>:null}
             </Text>
-            <TextInput 
+            <TextInput
+                value={nickName}
                 passwordRules={true}
                 onChangeText={setNickName}
                 textContentType="nickname"
