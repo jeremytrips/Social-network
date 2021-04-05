@@ -49,6 +49,7 @@ export default () => {
             <View>
                 <View style={{flexDirection: "row"}}>
                     <TextInput
+                        value={userPost}
                         onChangeText={setUserPost}
                         placeholder="Qqch à dire?"
 

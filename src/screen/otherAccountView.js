@@ -5,59 +5,59 @@ import { View, Image, StyleSheet, Text, FlatList, Button, ActivityIndicator } fr
 import Post from "../component/post";
 import { createNewPost, fetchUserPost, fetchUser } from "../api/firestoreAPI";
 
-export default () => {
+export default ({navigation}) => {
     const userImage = require("../../assets/default-avatar.png");
 
+    var user = {nickname: "helloworld", uid: "eyWIX7rESoGh2bcnTJvi4oLqI9a0"};
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true); 
-    const [user, setUser] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetchUser("jH28Nxq1f1xDYCS2iXJMOmKZZM30")
-        .then((user) => {
-            setUser(user);
-            fetchUserPost(user.uid)
-            .then((resp)=>{
-                let posts = [];
-                resp.forEach(post => {
-                    posts.push(post.data())
-                });
-                setPosts(posts)
-                setIsLoading(false);
-            });
+        // todo 
+        // user = navigation.params;
+        console.log(new Date());
+        fetchUserPost(user.uid)
+        .then((resp)=>{
+            // let posts = [];
+            // resp.forEach(post => {
+            //     posts.push([post.refdata()])
+            // });
+            console.log(new Date());
+            setPosts(resp)
+            setIsLoading(false);
         })
-        .catch((error)=> {
+        .catch((error)=>{
             console.log(error);
-            setError(error)
         })
     }, [])
 
 
 
-    return isLoading?(
-        <ActivityIndicator size="large" style={{backgroundColor: 'red'}}/>
-    ):(
-        <View>
-            <View>
+    return(
+        <View style={{flex: 1}}>
+            <View style={{flex: 1}}>
                 <Image source={userImage} style={styles.avatar}/>
                 <Text>{user.nickname}</Text>
             </View>
-            <FlatList
+            {isLoading?(
+                <ActivityIndicator style={{flex: 15}} size="large" />
+            ):(
+                <FlatList
                 keyExtractor={(item, index) => index.toString()}
                 data={posts}
+                style={{flex: 15}}
                 renderItem={({index, item})=>{
                     return(
                         <Post
-                            date={item.date}
-                            text={item.text}
-                            imageURL={item.imageUrl}
-                            user={item.user}
+                            data={item.data()}
+                            docSnapshot={item}
                         />
                     );
                 }}
 
-            />
+            />    
+            )}     
         </View>
     )
 };

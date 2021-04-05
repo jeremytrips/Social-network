@@ -12,7 +12,6 @@ db.settings({
 });
 
 
-
 export const getUserRef = (uid) => {
     return db.collection('users').doc(uid);
 }
@@ -26,7 +25,6 @@ export const fetchProfileData = async () => {
 
 export const createNewPost = (text, imageURI) => {
     return new Promise( async (resolve, reject) => {
-        // todo add image save on fb storage
         var data = {
             text: text,
             date: firestore.Timestamp.now(),
@@ -56,8 +54,21 @@ export const fetchUser = (uid) => {
         } catch (error) {
             reject(error);
         }
-    })
+    });
+}
 
+export const fetchUsers = (username) =>{
+    return new Promise((resolve, reject)=>{
+        const postsCol = db.collection('users');
+        postsCol.where('nickname', '==', username).get()
+        .then((resp)=>{
+            resolve(resp.docs);
+        })
+        .catch((error)=>{
+            console.warn(error);
+            reject(error);
+        })
+    })
 }
 
 export const fetchUserPost = (uid) => {
@@ -70,6 +81,49 @@ export const fetchUserPost = (uid) => {
         .catch((error)=>{
             console.warn(error);
             reject(error);
-        })
+        });
     })
+}
+
+
+export const setLikePost = (id) => {
+    return new Promise((resolve, reject)=>{
+        db.collection("posts").doc(id)
+        .collection("likes").doc(getUser().uid).set({liked: true})
+        .then(()=>{
+            resolve()
+        })
+        .catch((error)=>{
+            reject(error);
+        }); 
+    });
+}
+
+export const resetLikePost = (id) => {
+    return new Promise((resolve, reject)=>{
+        db.collection("posts").doc(id)
+        .collection("likes").doc(getUser().uid).set({liked: false})
+        .then(()=>{
+            resolve()
+        })
+        .catch((error)=>{
+            reject(error);
+        }); 
+    });
+}
+
+export const getPostLikes = (id) => {
+    return new Promise((resolve, reject)=>{
+        db.collection("posts").doc(id)
+        .collection("likes").doc(getUser().uid).get()
+        .then((resp)=>{
+            if (resp.exists && resp.data().liked)
+                resolve(true);
+            else
+                resolve(false);
+        })
+        .catch((error)=>{
+            reject(error);
+        }); 
+    });
 }
