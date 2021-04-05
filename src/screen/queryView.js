@@ -20,7 +20,6 @@ export default ({navigation}) =>{
                 users.push(user.data())
             });
             setQueriedUser(users)
-            console.log(users);
             setIsLoading(false);
         })
         .catch((error)=>{

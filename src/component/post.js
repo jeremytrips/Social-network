@@ -31,7 +31,6 @@ export default ({data, docSnapshot}) => {
     }
 
     const resetLikePost = () => {
-        console.log(id);
         resetLikePost_fb(id)
         .catch((error)=>{
             console.error(error);

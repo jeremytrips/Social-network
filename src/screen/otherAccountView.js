@@ -1,37 +1,62 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Text, FlatList, Button, ActivityIndicator } from "react-native"
+import { View, Image, StyleSheet, Text, FlatList, Button, ActivityIndicator, Alert } from "react-native"
 
 import Post from "../component/post";
-import { createNewPost, fetchUserPost, fetchUser } from "../api/firestoreAPI";
+import { createNewPost, fetchUserPost, fetchUser, followUser as followUser_fb, checkIfFollowing } from "../api/firestoreAPI";
 
 export default ({navigation}) => {
     const userImage = require("../../assets/default-avatar.png");
 
-    var user = {nickname: "helloworld", uid: "eyWIX7rESoGh2bcnTJvi4oLqI9a0"};
+    var user = {nickname: "helloworld", uid: "W0b8pDaAtGNLXcqOMUXliOfAG4EI"};
     const [posts, setPosts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true);
+    const [isFollowing, setIsFollowing] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        // todo 
-        // user = navigation.params;
-        console.log(new Date());
+        checkIfFollowing(user.uid)
+        .then((following)=>{
+            setIsFollowing(following);
+        })
+        .catch((error)=>{
+            console.error(error);
+        });
+        console.log(isFollowing);
         fetchUserPost(user.uid)
         .then((resp)=>{
-            // let posts = [];
-            // resp.forEach(post => {
-            //     posts.push([post.refdata()])
-            // });
-            console.log(new Date());
             setPosts(resp)
             setIsLoading(false);
         })
         .catch((error)=>{
-            console.log(error);
-        })
+            console.error(error);
+            setError(error)
+        });
     }, [])
 
+    const followUser = () => {
+        followUser_fb(user.uid, !isFollowing)
+        .catch((error)=>{
+            if(error == "EASTER_EGG")
+                alertCouillon();
+            else
+                console.error(error);
+        });
+        setIsFollowing(!isFollowing);
+    }
+
+    const alertCouillon = () => {
+        Alert.alert(
+            "Bug dans la matrix",
+            "Tu peux pas te suivre tout seul couillon!",
+            [
+                {
+                    text: "Oups",
+                    style: "ok",
+                },
+            ]
+        )
+    }
 
 
     return(
@@ -39,6 +64,7 @@ export default ({navigation}) => {
             <View style={{flex: 1}}>
                 <Image source={userImage} style={styles.avatar}/>
                 <Text>{user.nickname}</Text>
+                <Button title={isFollowing?"Ne plus suivre":"suivre"} onPress={followUser}/>
             </View>
             {isLoading?(
                 <ActivityIndicator style={{flex: 15}} size="large" />

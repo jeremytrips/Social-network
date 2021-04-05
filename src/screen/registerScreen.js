@@ -23,7 +23,6 @@ export default ({navigation}) => {
         try{
             await registerNewUserWithEmail(email, password, userdata);
         } catch (error) {
-            console.warn(error);
             setError(error);
         }
     }

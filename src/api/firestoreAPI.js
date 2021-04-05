@@ -65,7 +65,6 @@ export const fetchUsers = (username) =>{
             resolve(resp.docs);
         })
         .catch((error)=>{
-            console.warn(error);
             reject(error);
         })
     })
@@ -79,7 +78,6 @@ export const fetchUserPost = (uid) => {
             resolve(resp.docs);
         })
         .catch((error)=>{
-            console.warn(error);
             reject(error);
         });
     })
@@ -125,5 +123,62 @@ export const getPostLikes = (id) => {
         .catch((error)=>{
             reject(error);
         }); 
+    });
+}
+
+export const checkIfFollowing = (uid) => {
+    return new Promise((resovle, reject)=>{
+        db.collection("follow").where("followerUser", "==", getUser().uid).where("followingUser", "==", uid).get()
+        .then((docSnap)=> {
+            if (docSnap.size == 1){
+                resovle(docSnap.docs[0].data().following);
+            } else if(docSnap.size == 0){
+                resovle(false);
+            } else if(docSnap.size > 1){
+                reject("GOT MULTIPLE DOCUMENTS. Should have 0 or 1.");
+            }
+        })
+        .catch((error)=>{
+            reject(error);
+        });
+    });
+} 
+
+export const followUser = (uid, value) => {
+    return new Promise((resovle, reject)=>{
+        // if(uid == getUser().uid)
+        //     reject("EASTER_EGG")
+        db.collection("follow").where("followerUser", "==", getUser().uid).where("followingUser", "==", uid).get()
+        .then((docSnap)=> {
+            if (docSnap.size == 0){
+                db.collection("follow")
+                .add({
+                    followingUser: uid,
+                    followerUser: getUser().uid,
+                    following: value
+                })
+                .then((resp)=> {
+                    resolve();
+                })
+                .catch((error)=>{
+                    reject(error);
+                });                
+            } else if(docSnap.size == 1){
+                docSnap.docs[0].ref.update({
+                    following: value
+                })
+                .then((resp)=>{
+                    resovle();
+                })
+                .catch((error)=>{
+                    reject(error);
+                });    
+            } else {
+                reject("GOT MULTIPLE DOCUMENTS. Should have 0 or 1.");
+            }
+        })
+        .catch((error)=>{ 
+            reject(error);
+        });
     });
 }
