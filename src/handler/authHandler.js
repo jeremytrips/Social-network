@@ -33,7 +33,7 @@ export const AuthErrorHandler = (error) =>{
         case "auth/network-request-failed":
             return "AUTH_REGISTRATION_NETWORK_ERROR"
         default:
-            console.error(error)
+            throw error;
             return "UNKNOWN_ERROR"
     }
 }

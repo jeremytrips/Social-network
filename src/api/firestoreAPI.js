@@ -1,5 +1,5 @@
 
-import firestore from "@react-native-firebase/firestore";
+import firestore, {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { getUser } from "./authAPI";
 import { uploadImage } from "./storageAPI";
@@ -11,19 +11,36 @@ db.settings({
     ssl: false
 });
 
-
+/**
+ * Return a reference pointing to the user document for any read or update
+ * @param {String} uid uid of the user
+ * @async
+ * @returns {FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>}
+ */
 export const getUserRef = (uid) => {
     return db.collection('users').doc(uid);
 }
 
-
+/**
+ * Return all fields in the document as an Object. Returns 'undefined' if the document doesn't exist.
+ * @returns {Promise<FirebaseFirestoreTypes.DocumentData>}
+ */
 export const fetchProfileData = async () => {
-    const snapshot = await db.collection("users").doc(auth().currentUser.uid).get();
-    return snapshot.data();
+    return new Promise( async (resolve, reject)=>{
+        const snapshot = await db.collection("users").doc(auth().currentUser.uid).get()
+        .then((snapshot)=>{
+            resolve(snapshot.data())
+        })
+        .catch((error)=>{
+            // todo see for error handling.
+            throw error;
+            reject(error);
+        })
+    })
 }
 
 
-export const createNewPost = (text, imageURI) => {
+export const createNewPost = (/** @type {any} */ text, /** @type {any} */ imageURI) => {
     return new Promise( async (resolve, reject) => {
         var data = {
             text: text,
