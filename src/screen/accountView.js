@@ -82,9 +82,11 @@ export default () => {
                 title="Se déconnecter"
                 onPress={logout}
             />
-            <FlatList
+            {/* <FlatList
                 data={followingPosts}
-            />
+                renderItem={}
+                keyExtractor={}
+            /> */}
         </View>
     )
 };
