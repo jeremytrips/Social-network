@@ -1,6 +1,5 @@
 import functions from "@react-native-firebase/functions";
 
-functions().useFunctionsEmulator("http://localhost:5001")
 
 /**
  * 

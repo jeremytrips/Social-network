@@ -7,7 +7,7 @@ import User from "../component/user"
 
 export default ({navigation}) =>{
 
-    const [queriedUserName, setQueriedUserName] = useState("helloworld");
+    const [queriedUserName, setQueriedUserName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [queriedUsers, setQueriedUser] = useState([]);
 
@@ -29,18 +29,18 @@ export default ({navigation}) =>{
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View style={{}}>
             <View>
                 <TextInput
                     value={queriedUserName}
                     placeholder="Entrez le nom d'un utilisateur"
                     onChangeText={setQueriedUserName}
                     onBlur={queryUser}
-                    style={{flex: 1,backgroundColor: "red"}}
+                    style={{ height: 50}}
                 />
                 <Button title="query" onPress={queryUser}/> 
             </View>
-            <View style={{ flex: 20}}>
+            <View style={{}}>
             {
                 isLoading?(
                     <ActivityIndicator size="large" style={{backgroundColor: 'blue'}}/>

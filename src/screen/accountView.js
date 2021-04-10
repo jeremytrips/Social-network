@@ -1,13 +1,13 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Image, StyleSheet, TextInput, Button, Text, Alert, Pressable } from "react-native"
+import { FlatList } from "react-native-gesture-handler";
 
 import { logout, getUser } from "../api/authAPI";
-import { createNewPost } from "../api/firestoreAPI";
+import { createNewPost, fetchFollowerPost } from "../api/firestoreAPI";
 import PictureModal from "../modals/pictureModal";
 
 export default () => {
-    const userImage = require("../../assets/default-avatar.png");
     const _cameraImage = require("../../assets/camera.png")
 
     const user = getUser();
@@ -15,6 +15,20 @@ export default () => {
     const [userPost, setUserPost] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postImageURI, _setPostImageURI] = useState(null);
+    const [followingPosts, setFollowingPosts] = useState(null);
+
+
+    useEffect(() => {
+        fetchFollowerPost()
+        .then((posts)=>{
+            var temp = [];
+            posts.forEach(post => {
+                temp.push(post.data())
+            });
+            setFollowingPosts(temp);
+            console.log(temp);
+        })
+    }, [])
 
     const setPostImageURI = (uri) => {
         setImage({uri: uri})
@@ -44,7 +58,6 @@ export default () => {
 
     return(
         <View>
-            <Image source={userImage} style={styles.avatar}/>
            {user!=null? <Text>{user.displayName}</Text>:null}
             <View>
                 <View style={{flexDirection: "row"}}>
@@ -58,8 +71,7 @@ export default () => {
                         <Image source={image} style={{width: 50, height: 50}}/>
                     </Pressable>
                 </View>
-                    <Button title="Poster" onPress={postMessage}/>
-                <Button title="Ajouter une image" onPress={openPictureModal}/>
+                <Button title="Poster" onPress={postMessage}/>
             </View>
             <PictureModal
                 modalIsOpen={modalIsOpen}
@@ -69,7 +81,10 @@ export default () => {
             <Button
                 title="Se déconnecter"
                 onPress={logout}
-            /> 
+            />
+            <FlatList
+                data={followingPosts}
+            />
         </View>
     )
 };

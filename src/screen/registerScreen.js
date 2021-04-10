@@ -17,11 +17,8 @@ export default ({navigation}) => {
             setError("Mot de passe sont différents");
             return;
         }
-        const userdata = {
-            displayName: nickName
-        }
         try{
-            await registerNewUserWithEmail(email, password, userdata);
+            await registerNewUserWithEmail(email, password, nickName);
         } catch (error) {
             setError(error);
         }

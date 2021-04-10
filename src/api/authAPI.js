@@ -1,8 +1,6 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { AuthErrorHandler } from "../handler/authHandler";
-
-const __USE_EMULATOR__ = true;
-const __AUTH_EMULATOR__ = "http://localhost:9099"
+import { createUserProfile } from "./functionsAPI";
 
 /**
  * Get reload and resolve user from the firebase app.
@@ -33,7 +31,7 @@ export const getUser = () => {
  *  
  * @param {string} userEmail email of the user
  * @param {string} password password of the uer
- * @param {import("./jsodc").UploadUserData} userData contains the user data.
+ * @param {string} displayName user nickname
  * @returns {Promise<void>}
  * @error AUTH_REGISTRATION_EMAIL_USED email is already used.
  * @error AUTH_REGISTRATION_INVALID_EMAIL email not parsed.
@@ -42,12 +40,14 @@ export const getUser = () => {
  * @error AUTH_REGISTRATION_NETWORK_ERROR Network errors
  * @error AUTH_REGISTRATION_INTERN_ERROR means that something went wrong inside the app.
  */
-export const registerNewUserWithEmail = (userEmail, password, userData) => {
+export const registerNewUserWithEmail = (userEmail, password, displayName) => {
     return new Promise( async (resolve, reject) => {  
         try {
-            if(__USE_EMULATOR__)
-                auth().useEmulator(__AUTH_EMULATOR__);
-            await auth().createUserWithEmailAndPassword(userEmail, password);
+            const user = await auth().createUserWithEmailAndPassword(userEmail, password);
+            createUserProfile({
+                uid: user.user.uid,
+                nickname: displayName
+            });
             resolve();
         } catch (error) {
             const errorTranslation = AuthErrorHandler(error);
@@ -70,11 +70,9 @@ export const registerNewUserWithEmail = (userEmail, password, userData) => {
  */
 
 export const login = (email, password) => {
-    return new Promise((resolve, reject)=>{
-        if(__USE_EMULATOR__)
-            auth().useEmulator(__AUTH_EMULATOR__);
+    return new Promise( async (resolve, reject)=>{
         auth().signInWithEmailAndPassword(email, password)
-        .then(() =>{
+        .then( async (resp) =>{
             resolve();
         })
         .catch((error)=>{

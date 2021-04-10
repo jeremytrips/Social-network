@@ -6,11 +6,6 @@ import { uploadImage } from "./storageAPI";
 
 export const db = firestore();
 
-db.settings({
-    host: "localhost:8080",
-    ssl: false
-});
-
 /**
  * Return a reference pointing to the user document for any read or update
  * @param {String} uid uid of the user
@@ -97,9 +92,35 @@ export const fetchUserPost = (uid) => {
         .catch((error)=>{
             reject(error);
         });
-    })
+    });
 }
 
+
+export const fetchFollowerPost = () => {
+    return new Promise( async (resolve, reject)=>{
+        const followedDoc = await db.collection('follow')
+        .where("followingUser", "==", getUser().uid)
+        .where("following", "==", true).get();
+        let followedUser = [];
+        console.log();
+        followedDoc.docs.forEach((follow)=>{
+            followedUser.push(follow.data().followingUser);
+        });
+        if (followedUser.length == 0){
+            resolve();
+        } else {
+            console.log("hiy"); 
+            const postsCol = db.collection('posts');
+            postsCol.where('user', 'in', followedUser).get()
+            .then((resp)=>{
+                resolve(resp.docs);
+            })
+            .catch((error)=>{
+                reject(error);
+            });
+        }
+    });
+}
 
 export const setLikePost = (id) => {
     return new Promise((resolve, reject)=>{
@@ -162,9 +183,9 @@ export const checkIfFollowing = (uid) => {
 } 
 
 export const followUser = (uid, value) => {
-    return new Promise((resovle, reject)=>{
-        // if(uid == getUser().uid)
-        //     reject("EASTER_EGG")
+    return new Promise((resolve, reject)=>{
+        if(uid == getUser().uid)
+            reject("EASTER_EGG");
         db.collection("follow").where("followerUser", "==", getUser().uid).where("followingUser", "==", uid).get()
         .then((docSnap)=> {
             if (docSnap.size == 0){
