@@ -7,6 +7,8 @@ import { logout, getUser } from "../api/authAPI";
 import { createNewPost, fetchFollowerPost } from "../api/firestoreAPI";
 import PictureModal from "../modals/pictureModal";
 
+import Post from "../component/post";
+
 export default () => {
     const _cameraImage = require("../../assets/camera.png")
 
@@ -23,10 +25,9 @@ export default () => {
         .then((posts)=>{
             var temp = [];
             posts.forEach(post => {
-                temp.push(post.data())
+                temp.push(post);
             });
             setFollowingPosts(temp);
-            console.log(temp);
         })
     }, [])
 
@@ -82,11 +83,22 @@ export default () => {
                 title="Se déconnecter"
                 onPress={logout}
             />
-            {/* <FlatList
+
+
+            <FlatList
+                keyExtractor={(followingPosts, index) => index.toString()}
                 data={followingPosts}
-                renderItem={}
-                keyExtractor={}
-            /> */}
+                style={{}}
+                renderItem={({index, item})=>{
+                    return(
+                        <Post
+                            data={item.data()}
+                            docSnapshot={item}
+                        />
+                    );
+                }}
+
+            /> 
         </View>
     )
 };
