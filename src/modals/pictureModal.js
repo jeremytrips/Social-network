@@ -46,23 +46,24 @@ export default ({modalIsOpen, setModalIsOpen, setImageURI}) => {
             }}
         >
             <View style={styles.modal}>
-                <Pressable
-                    // style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalIsOpen(!modalIsOpen)}
-                >
-                    <Text>Fermer</Text>
-                </Pressable>
+                
                 <Pressable
                     // style={[styles.button, styles.buttonClose]}
                     onPress={takePicture}
                 >
-                    <Text>Prendre une photo?</Text>
+                    <Text style={{textAlign : 'center', fontSize:12, paddingBottom:5}}>Prendre une photo?</Text>
                 </Pressable>
                 <Pressable
                     // style={[styles.button, styles.buttonClose]}
                     onPress={getPicture}
                 >
-                    <Text>Choisir une photo?</Text>
+                    <Text style={{textAlign : 'center', fontSize:12, paddingBottom:5}}>Choisir une photo?</Text>
+                </Pressable>
+                <Pressable
+                    // style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalIsOpen(!modalIsOpen)}
+                >
+                    <Text style={{textAlign : 'center', fontSize:12, paddingBottom:5}}>Fermer</Text>
                 </Pressable>
             </View>
         </Modal>
@@ -75,7 +76,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         backgroundColor: "lightgrey",
         width: "80%",
-        height: "75%",
+        height: "20%",
+        paddingTop:40,
         // flex: 1,
         flexDirection: 'column',
         // justifyContent: 'center',

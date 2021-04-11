@@ -58,54 +58,89 @@ export default () => {
     }
 
     return(
-        <View>
+        <View style={ styles.page }>
            {user!=null? <Text>{user.displayName}</Text>:null}
-            <View>
-                <View style={{flexDirection: "row"}}>
-                    <TextInput
-                        value={userPost}
-                        onChangeText={setUserPost}
-                        placeholder="Qqch à dire?"
+            <View style={ styles.utilisateur }>
+                <View style={ styles.input }>
 
-                    />
-                    <Pressable onPress={openPictureModal}>
-                        <Image source={image} style={{width: 50, height: 50}}/>
-                    </Pressable>
+                    <View style={{flex : 2}}>
+                        <Pressable onPress={openPictureModal}>
+                            <Image source={image} style={{ width : 50, height : 50, padding: 10 }}/>
+                        </Pressable>
+                    </View>
+
+                    <View style={{flex : 10}}>
+                        <TextInput
+                            style={{textAlign:'center', justifyContent: 'center'}}
+                            multiline
+                            value={userPost}
+                            onChangeText={setUserPost}
+                            placeholder="Something to say ?"
+                        />
+                    </View>
                 </View>
+
                 <Button title="Poster" onPress={postMessage}/>
+            
+                <Button
+                    color='red'
+                    title="Se déconnecter"
+                    onPress={logout}
+                />
             </View>
+
             <PictureModal
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
                 setImageURI={setPostImageURI}
             />
-            <Button
-                title="Se déconnecter"
-                onPress={logout}
-            />
 
-
-            <FlatList
-                keyExtractor={(followingPosts, index) => index.toString()}
-                data={followingPosts}
-                style={{}}
-                renderItem={({index, item})=>{
-                    return(
-                        <Post
-                            data={item.data()}
-                            docSnapshot={item}
-                        />
-                    );
-                }}
-
-            /> 
+            <View style={ styles.container }>
+                <FlatList
+                    keyExtractor={(followingPosts, index) => index.toString()}
+                    data={followingPosts}
+                    renderItem={({index, item})=>{
+                        return(
+                            <Post
+                                data={item.data()}
+                                docSnapshot={item}
+                            />
+                        );
+                    }}
+                /> 
+            </View>
         </View>
     )
 };
 
 const styles = StyleSheet.create({
+
     avatar: {
+        flex : 1,
         width: 256,
         height: 256,
+    },
+
+    container:{
+        flex : 3,
+        backgroundColor:'lightblue',
+    },
+
+    utilisateur:{
+        flex : 1,
+        alignItems : 'center',
+        backgroundColor : 'white',
+        
+    },
+
+    input:{
+        flex : 1, 
+        backgroundColor : 'white', 
+        flexDirection: "row", 
+        alignItems: 'center',
+    },
+
+    page:{
+        flex:5
     }
 });
