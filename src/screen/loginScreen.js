@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
     logo_view:{
-        flex: 4
+        flex: 3
     },
     content_view:{
-        flex: 3
+        flex: 4
     },
     symbol:{
         textAlign: 'center',
