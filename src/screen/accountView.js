@@ -61,6 +61,13 @@ export default () => {
         <View style={ styles.page }>
            {user!=null? <Text>{user.displayName}</Text>:null}
             <View style={ styles.utilisateur }>
+                
+                <Button
+                    color='red'
+                    title="Disconnect"
+                    onPress={logout}
+                />
+                
                 <View style={ styles.input }>
 
                     <View style={{flex : 2}}>
@@ -69,9 +76,9 @@ export default () => {
                         </Pressable>
                     </View>
 
-                    <View style={{flex : 10}}>
+                    <View style={{flex : 10, padding:5}}>
                         <TextInput
-                            style={{textAlign:'center', justifyContent: 'center'}}
+                            style={{textAlign:'center'}}
                             multiline
                             value={userPost}
                             onChangeText={setUserPost}
@@ -80,13 +87,9 @@ export default () => {
                     </View>
                 </View>
 
-                <Button title="Poster" onPress={postMessage}/>
+                <Button title="New post" onPress={postMessage}/>
             
-                <Button
-                    color='red'
-                    title="Se déconnecter"
-                    onPress={logout}
-                />
+                
             </View>
 
             <PictureModal
@@ -124,13 +127,12 @@ const styles = StyleSheet.create({
     container:{
         flex : 3,
         backgroundColor:'lightblue',
+        paddingTop : 10,
     },
 
     utilisateur:{
         flex : 1,
-        alignItems : 'center',
         backgroundColor : 'white',
-        
     },
 
     input:{
