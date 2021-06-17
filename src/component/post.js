@@ -52,7 +52,6 @@ export default ({data, docSnapshot}) => {
         <Pressable onPress={liked?resetLikePost:setLikePost}>
             <View style={{flex : 1,  borderColor: 'black', borderWidth: 0.5, flexDirection: "row"}}>
                 <View style={{flex : 1, padding:8}}>
-                    {console.log(data)}
                     <Text style={{fontStyle:'italic', fontSize:12, paddingBottom:5}}>The {data.date.toDate().toString()} </Text>
                     <Text style={{textDecorationLine:'underline', fontSize:18}}>User "{userName}" said :</Text>
                     <Text style={{textAlign : 'center', fontSize:16, paddingBottom:5}}> {data.text} </Text>

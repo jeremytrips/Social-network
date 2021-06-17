@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Text, FlatList, Button, ActivityIndicator, Alert } from "react-native"
+import { View, Image, StyleSheet, Text, FlatList, Button, ActivityIndicator, Alert, ScrollView } from "react-native"
 
 import Post from "../component/post";
 import { createNewPost, fetchUserPost, fetchUser, followUser as followUser_fb, checkIfFollowing } from "../api/firestoreAPI";
@@ -61,6 +61,7 @@ export default ({route, navigation}) => {
         )
     }
 
+    console.log(posts.length);
 
     return(
         <View style={{}}>
@@ -72,21 +73,23 @@ export default ({route, navigation}) => {
             {isLoading?(
                 <ActivityIndicator style={{}} size="large" />
             ):(
-                <FlatList
-                keyExtractor={(item, index) => index.toString()}
-                data={posts}
-                style={{}}
-                renderItem={({index, item})=>{
-                    return(
-                        <Post
-                            data={item.data()}
-                            docSnapshot={item}
-                        />
-                    );
-                }}
+                <ScrollView>
+                    <FlatList
+                    keyExtractor={(item, index) => index.toString()}
+                    data={posts}
+                    style={{}}
+                    renderItem={({index, item})=>{
+                        return(
+                            <Post
+                                data={item.data()}
+                                docSnapshot={item}
+                            />
+                        );
+                    }}
 
-            />    
-            )}     
+                />    
+            </ScrollView> 
+            )}
         </View>
     )
 };

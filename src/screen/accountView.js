@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, TextInput, Button, Text, Alert, Pressable } from "react-native"
+import { View, Image, StyleSheet, TextInput, Button, Text, Alert, Pressable, ScrollView } from "react-native"
 import { FlatList } from "react-native-gesture-handler";
 
 import { logout, getUser } from "../api/authAPI";
@@ -99,6 +99,7 @@ export default () => {
             />
 
             <View style={ styles.container }>
+                <ScrollView>
                 <FlatList
                     keyExtractor={(followingPosts, index) => index.toString()}
                     data={followingPosts}
@@ -111,6 +112,7 @@ export default () => {
                         );
                     }}
                 /> 
+                </ScrollView>
             </View>
         </View>
     )

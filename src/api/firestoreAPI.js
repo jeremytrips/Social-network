@@ -107,7 +107,7 @@ export const fetchFollowerPost = () => {
             followedUser.push(follow.data().followingUser);
         });
         if (followedUser.length == 0){
-            resolve();
+            resolve([]);
         } else {
             console.log("hiy"); 
             const postsCol = db.collection('posts');
