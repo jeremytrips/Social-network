@@ -6,8 +6,8 @@ import {login as fb_login} from "../api/authAPI";
 
 
 export default ({navigation}) => {
-    const [email, setEmail] = useState("jeremy.trips@gmail.com");
-    const [password, setPassword] = useState("Youssoupha1995");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     
     const navigateToRegistration = ()=>{

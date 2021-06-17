@@ -6,11 +6,11 @@ import { createUserDocument } from "../api/firestoreAPI";
 
 
 export default ({navigation}) => {
-    const [nickName, setNickName] = useState("helloworld")
-    const [email, setEmail] = useState("jeremy.trips@gmail.com");
-    const [password, setPassword] = useState("Youssoupha1995");
-    const [password2, setPassword2] = useState("Youssoupha1995");
-    const [error, setError] = useState("")
+    const [nickName, setNickName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [error, setError] = useState("");
 
     const register = async () => {
         if( password != password2){
@@ -44,7 +44,6 @@ export default ({navigation}) => {
                 textContentType={"emailAddress"}
                 onChangeText={setEmail}
                 placeholder="email"
-                placeholderTextColor='lightgrey'
                 keyboardType="email-address"
             />
             <TextInput

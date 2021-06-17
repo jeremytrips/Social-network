@@ -73,11 +73,11 @@ export default ({route, navigation}) => {
             {isLoading?(
                 <ActivityIndicator style={{}} size="large" />
             ):(
-                <ScrollView>
+                // <ScrollView>
                     <FlatList
                     keyExtractor={(item, index) => index.toString()}
                     data={posts}
-                    style={{}}
+                    style={{marginBottom: 80}}
                     renderItem={({index, item})=>{
                         return(
                             <Post
@@ -88,7 +88,7 @@ export default ({route, navigation}) => {
                     }}
 
                 />    
-            </ScrollView> 
+            // </ScrollView> 
             )}
         </View>
     )

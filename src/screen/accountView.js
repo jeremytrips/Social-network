@@ -99,7 +99,7 @@ export default () => {
             />
 
             <View style={ styles.container }>
-                <ScrollView>
+                {/* <ScrollView> */}
                 <FlatList
                     keyExtractor={(followingPosts, index) => index.toString()}
                     data={followingPosts}
@@ -112,7 +112,7 @@ export default () => {
                         );
                     }}
                 /> 
-                </ScrollView>
+                {/* </ScrollView> */}
             </View>
         </View>
     )
